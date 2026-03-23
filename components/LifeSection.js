@@ -211,7 +211,7 @@ function FootballZone() {
           fontWeight: 400,
           marginBottom: '0.1rem',
         }}>
-          Football as as sport has taught me many important skills - discipline, team spirit 
+          Football as a sport has taught me many important skills - discipline, team spirit 
           and the never-give-up attitude that shapes not just how I play, but also how I work.
         </p>
 
@@ -491,7 +491,7 @@ function TravelZone() {
         fontSize: '0.88rem', color: 'white', fontWeight: 300,
         fontStyle: 'italic', marginTop: '0.25rem',
       }}>
-        Hiking, exploring, and finding signal-free zones since 2018.
+        Hiking, exploring and finding signal-free zones since 2018.
       </p>
     </div>
   )
