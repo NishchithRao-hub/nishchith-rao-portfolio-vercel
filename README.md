@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+The current website version is deployed on 'https://nishchith-rao.vercel.app/'
+
 ## Getting Started
 
 First, run the development server:
@@ -34,3 +36,27 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+To deploy via the terminal:
+
+Build the server:
+
+```bash
+npm run build
+```
+
+If you do not have Vercel already installed, use this command:
+
+```bash
+npm install -g vercel
+```
+
+Deploy the website on Vercel:
+
+```bash
+vercel --prod
+```
+
+## Questions/Feedback
+
+For any questions or feedback regarding the website design or for pitching in new ideas, feel free to use the contact form available on 'https://nishchith-rao.vercel.app/'

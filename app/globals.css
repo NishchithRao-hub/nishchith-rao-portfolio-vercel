@@ -1,26 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* ── Colors ── */
+  --color-background-primary:   #0A0A0F;
+  --color-background-secondary: #111118;
+  --color-background-card:      #16161F;
+  --color-background-elevated:  #1C1C28;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-accent-blue:          #378ADD;
+  --color-accent-blue-light:    #85B7EB;
+  --color-accent-teal:          #1D9E75;
+  --color-accent-purple:        #7F77DD;
+  --color-accent-amber:         #EF9F27;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-text-primary:         #F0EEE8;
+  --color-text-secondary:       #9B99A6;
+  --color-text-muted:           #5A5868;
+
+  --color-border-subtle:        #1E1E2E;
+  --color-border-medium:        #2A2A3C;
+  --color-border-strong:        #3A3A50;
+
+  /* ── Fonts ── */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ── Border radius ── */
+  --radius-card: 12px;
+  --radius-pill: 999px;
+
+  /* ── Animations ── */
+  --animate-fade-up:    fadeUp 0.6s ease forwards;
+  --animate-fade-in:    fadeIn 0.4s ease forwards;
+  --animate-pulse-slow: pulse 3s ease-in-out infinite;
+
+  @keyframes fadeUp {
+    0%   { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
   }
 }
 
+/* ── Base ── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #2A2A3C #0A0A0F;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: #0A0A0F; }
+::-webkit-scrollbar-thumb { background: #2A2A3C; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3A3A50; }
+
+/* ── Selection ── */
+::selection {
+  background: rgba(55, 138, 221, 0.25);
+  color: #F0EEE8;
+}
+
+/* ── Focus ── */
+:focus-visible {
+  outline: 2px solid #378ADD;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+a {
+  color: var(--color-accent-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover { color: var(--color-accent-blue-light); }
+
+/* ── Layout utilities ── */
+.section-padding {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.container-custom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--color-background-card);
+  border: 0.5px solid var(--color-border-medium);
+  border-radius: var(--radius-card);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: rgba(55, 138, 221, 0.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(55,138,221,0.3);
+}
+
+/* ── Accent border variants ── */
+.border-accent-blue   { border-left: 2px solid var(--color-accent-blue); }
+.border-accent-teal   { border-left: 2px solid var(--color-accent-teal); }
+.border-accent-purple { border-left: 2px solid var(--color-accent-purple); }
+.border-accent-amber  { border-left: 2px solid var(--color-accent-amber); }
+
+/* ── Chip / tag ── */
+.chip {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 0.5px solid var(--color-border-medium);
+  background: var(--color-background-elevated);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Section heading label ── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-blue);
+}
+
+/* ── Subtle grid background ── */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Animate on scroll ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Mobile responsiveness ── */
+
+/* Skills terminal sidebar wraps on small screens */
+@media (max-width: 640px) {
+  .terminal-body {
+    flex-direction: column !important;
+  }
+  .terminal-sidebar {
+    width: 100% !important;
+    flex-direction: row !important;
+    overflow-x: auto;
+    border-right: none !important;
+    border-bottom: 0.5px solid #1E1E2E;
+    padding: 0.5rem !important;
+  }
+  .terminal-sidebar button {
+    flex-shrink: 0;
+  }
+}
+
+/* Projects node graph — scale down on mobile */
+@media (max-width: 640px) {
+  .project-graph svg {
+    transform: scale(0.75);
+    transform-origin: top center;
+  }
+}
+
+/* Education book — stack vertically on mobile */
+@media (max-width: 680px) {
+  .book-wrapper {
+    flex-direction: column !important;
+  }
+  .book-cover-left,
+  .book-cover-right {
+    display: none !important;
+  }
+  .book-spine {
+    width: 100% !important;
+    height: 14px !important;
+    writing-mode: horizontal-tb !important;
+  }
+  .book-spine p {
+    transform: none !important;
+    font-size: 0.5rem !important;
+    letter-spacing: 0.2em !important;
+  }
+}
+
+/* Life section horizontal scroll hint on mobile */
+@media (max-width: 640px) {
+  .zone-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+    padding-bottom: 4px;
+  }
+  .zone-tabs button {
+    flex-shrink: 0;
+  }
+}
+
+/* Contact form stacks on mobile */
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Hero floating badges hide on small screens */
+@media (max-width: 768px) {
+  .hero-badge {
+    display: none !important;
+  }
+}
+
+/* General spacing tightening on mobile */
+@media (max-width: 640px) {
+  .section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  .container-custom {
+    padding: 0 1rem;
+  }
 }
