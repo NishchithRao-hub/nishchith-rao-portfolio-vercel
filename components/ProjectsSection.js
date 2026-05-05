@@ -92,21 +92,35 @@ const projects = [
     ],
     tags: ['Python', 'PyTorch', 'OpenAI', 'Reinforcement Learning', 'OpenCV', 'Unity ML', 'GPU Computing'],
   },
+  {
+    id:      'synthflow',
+    title:   'SynthFlow',
+    tagline: 'AI-assisted workflow orchestration for modern teams',
+    accent:  '#22D3EE',
+    github:  'https://github.com/NishchithRao-hub/synthflow',
+    image:   '/projects/synthflow.png',
+    domain:  'Full Stack / AI Workflow Automation',
+    summary: 'SynthFlow is a workflow automation platform that helps teams define, trigger and monitor multi-step processes with real-time visibility and reliable execution.',
+    what: [
+      'Event-driven workflow engine with retry-safe DAG-based execution',
+      '3-type configurable node workflows with real-time monitoring and run tracking',
+      'React-based workflow builder for repeatable operational pipelines',
+      'Stripe based subscription billing and usage metering dashboard with rate limits',
+    ],
+    stats: [
+      { label: 'Uptime Percentage', value: '99.5%' },
+      { label: 'Concurrent Workflows', value: '20+' },
+      { label: 'p95 Response times', value: '<120ms' },
+    ],
+    tags: ['Python', 'TypeScript', 'Next.js', 'AWS', 'OpenAI', 'SQLAlchemy', 'Redis', 'Docker'],
+  },
 ]
 
 // Fixed pixel canvas — all coordinates in this space
 const W = 740, H = 580
 const CX = W / 2, CY = H / 2
-const RH = 290  // horizontal radius (left/right nodes)
-const RV = 245  // vertical radius (top/bottom nodes)
-
-// Equidistant: top, right, bottom, left
-const nodeCoords = [
-  { x: CX,        y: CY - RV }, // top
-  { x: CX + RH,   y: CY      }, // right
-  { x: CX,        y: CY + RV }, // bottom
-  { x: CX - RH,   y: CY      }, // left
-]
+const ORBIT_RX = 265
+const ORBIT_RY = 215
 
 function ProjectModal({ project, onClose }) {
   if (!project) return null
@@ -236,16 +250,26 @@ export default function ProjectsSection() {
   const canvasRef   = useRef(null)
   const [active, setActive]       = useState(null)
   const [imgLoaded, setImgLoaded] = useState({})
-  const [ticks,  setTicks]        = useState([0.1, 0.35, 0.6, 0.85])
+  const [ticks,  setTicks]        = useState(() =>
+    Array.from({ length: projects.length }, (_, i) => (i + 1) / (projects.length + 1))
+  )
   const [spin,   setSpin]       = useState(0)
-  const [floats, setFloats]     = useState([0, 0, 0, 0, 0]) // 4 nodes + hub
-  const tickRef  = useRef([0.1, 0.35, 0.6, 0.85])
+  const [floats, setFloats]     = useState(() => Array(projects.length + 1).fill(0))
+  const tickRef  = useRef(Array.from({ length: projects.length }, (_, i) => (i + 1) / (projects.length + 1)))
   const spinRef  = useRef(0)
   const timeRef  = useRef(0)
   const rafRef   = useRef(null)
 
+  const nodeCoords = projects.map((_, i) => {
+    const angle = -Math.PI / 2 + (i * 2 * Math.PI) / projects.length
+    return {
+      x: CX + Math.cos(angle) * ORBIT_RX,
+      y: CY + Math.sin(angle) * ORBIT_RY,
+    }
+  })
+
   useEffect(() => {
-    const speeds = [0.00022, 0.00018, 0.00025, 0.00020]
+    const speeds = Array.from({ length: projects.length }, (_, i) => 0.00018 + (i % 5) * 0.000015)
     let last = performance.now()
     const loop = now => {
       const dt = now - last; last = now
@@ -256,11 +280,12 @@ export default function ProjectsSection() {
       setTicks([...tickRef.current])
       setSpin(spinRef.current)
       setFloats([
-        Math.sin(t * 0.9)   * 7,
-        Math.sin(t * 0.75)  * 6,
-        Math.sin(t * 1.0)   * 8,
-        Math.sin(t * 0.85)  * 7,
-        Math.sin(t * 0.65)  * 6, // hub
+        ...Array.from({ length: projects.length }, (_, i) => {
+          const freq = 0.75 + i * 0.08
+          const amp = 6 + (i % 3)
+          return Math.sin(t * freq) * amp
+        }),
+        Math.sin(t * 0.65) * 6,
       ])
       rafRef.current = requestAnimationFrame(loop)
     }
@@ -467,7 +492,7 @@ export default function ProjectsSection() {
             })}
 
             {/* ── Space station hub (center) ── */}
-            <g transform={`translate(${CX},${CY + floats[4]})`}>
+            <g transform={`translate(${CX},${CY + floats[projects.length]})`}>
               {/* Rotating solar panels */}
               <g transform={`rotate(${spin})`}>
                 {/* Horizontal arm */}
